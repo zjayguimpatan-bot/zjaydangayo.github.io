@@ -277,6 +277,7 @@ home: () => [`
 personal: () => [
   wrap(`${head("Personal Information")}
     <div class="cols"><div class="avatar">${ph("Profile picture","",CONFIG.profileImg)}</div>
+    <div><h2>About me</h2><p class="lead">${CONFIG.bio}</p><p class="motto">“${CONFIG.motto}”</p></div></div>`),
   wrap(`${head("My details")}<div class="facts">${CONFIG.info.map(f=>`<div class="card fact"><b>${f[0]}</b><span>${f[1]}</span></div>`).join("")}</div>`),
   wrap(`${head("Interests, goals and career")}
     <div class="grid sm">${cards(CONFIG.interests.map(i=>[i[0],i[1],""]))}</div>
