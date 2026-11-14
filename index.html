@@ -148,6 +148,18 @@ blockquote{font-size:clamp(.95rem,2vw,1.3rem);margin:0 0 .8rem}
 footer{padding:.4rem 0;margin:0}
 footer .wrap{font-size:.75rem;gap:.5rem}
 .soc a{padding:.15rem .6rem}
+
+/* ===== NEW ACHIEVEMENTS DESIGN: photo cards, 3 per screen ===== */
+.ach{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;align-items:stretch}
+@media(max-width:699px){.ach{grid-template-columns:1fr}}
+.ach-card{display:flex;flex-direction:column;gap:.6rem;padding:.6rem;overflow:hidden}
+.ach-card .ph{width:100%;aspect-ratio:16/10;max-height:30vh;min-height:0;padding:.4rem}
+@media(max-width:699px){.ach-card .ph{aspect-ratio:16/8;max-height:24vh}}
+.ach-b{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.ach-b h3{font-size:1rem;margin:0}
+.ach-b .meta{font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+.ach-b p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ach-card .by{color:var(--text);font-size:.82rem;font-weight:500}
 </style>
 </head>
 <body>
@@ -175,7 +187,7 @@ footer .wrap{font-size:.75rem;gap:.5rem}
    and write the path, e.g. "img": "assets/images/me.jpg"
    ============================================================ */
 const CONFIG = {
-  name: "Zadery Jay Joseph G. Dangayo",
+  name: "Zadery Jay Joseph Dangayo",
   nickname: "Zjay",
   tagline: "Exploring Technology. Connecting Networks. Securing the Digital World.",
   socials: [["GitHub","https://github.com/"],["LinkedIn","https://www.linkedin.com/"],["Facebook","https://www.facebook.com/"]],
@@ -198,14 +210,34 @@ const CONFIG = {
   bio: "I'm an Information Technology student who enjoys figuring out how networks work and how to keep them safe. I like building small labs at home, breaking them on purpose, and learning how to fix them.",
   goals: "Finish my degree with strong grades, earn entry-level networking and security certifications, and build a home lab to practice what I learn.",
   career: "Start as a network or systems administrator, grow into a security analyst role, and eventually work toward network security engineering.",
+
+  /* ---------- ACHIEVEMENTS: write yours here ----------
+     Copy one line {...} to add more. Each one becomes a card.
+       cat   = category (becomes a filter button). Use any name:
+               Academic, Certificates, Activities, Awards, Skills ...
+       title = name of the achievement
+       year  = year or date, e.g. "2026" or "March 2026"
+       by    = (optional) who gave it / where, e.g. "University of the Cordilleras"
+       desc  = 1 to 2 sentences about it (long text is cut after 3 lines)
+       img   = photo path, e.g. "assets/images/dean-lister.jpg"
+               Leave "" to show a box you can click to add a photo.
+  */
   achievements: [
-    {cat:"Academic",title:"Blank",year:"2026",desc:"Blankl.",img:""},
-    {cat:"Certificates",title:"Blank",year:"2025",desc:"Blankl.",img:""},
-    {cat:"Activities",title:"Blank",year:"2024",desc:"Blankl.",img:""},
-    {cat:"Awards",title:"Blank",year:"2026",desc:"Blankl.",img:""},
-    {cat:"Skills",title:"Blank",year:"2026",desc:"Blankl.",img:""}
+    {cat:"Academic",     title:"Write your achievement title here", year:"2026", by:"Where or who gave it", desc:"Write a short description of what you achieved.", img:""},
+    {cat:"Certificates", title:"Write your achievement title here", year:"2025", by:"Where or who gave it", desc:"Write a short description of what you achieved.", img:""},
+    {cat:"Activities",   title:"Write your achievement title here", year:"2024", by:"Where or who gave it", desc:"Write a short description of what you achieved.", img:""},
+    {cat:"Awards",       title:"Best Midfielder", year:"2023", by:"Lamut Central School", desc:"Best Midfielder.", img:""},
+    {cat:"Skills",       title:"Write your achievement title here", year:"2026", by:"Where or who gave it", desc:"Write a short description of what you achieved.", img:""}
   ],
-  gallery: ["Certificate 1","Certificate 2","Award photo","Activity photo","Milestone photo"],
+  /* Gallery: label = caption, img = photo path ("" to add by clicking) */
+  gallery: [
+    {label:"Certificate 1", img:""},
+    {label:"Certificate 2", img:""},
+    {label:"Award photo", img:""},
+    {label:"Activity photo", img:""},
+    {label:"Milestone photo", img:""}
+  ],
+
   familyIntro: "My family is one of the most important parts of my life. They are my source of inspiration, strength, motivation, and support as I continue pursuing my dreams and goals.",
   members: [
     {name:"Jessica G. Dangayo",rel:"Mother",msg:"Short message.",img:""},
@@ -225,6 +257,7 @@ const cards = (a) => a.map(i=>`<div class="card"><span class="ico">${i[0]}</span
 /* ---------- pages: each page is a list of screens (no scrolling) ---------- */
 const order = ["home","personal","achievements","family"];
 const names = {home:"Home",personal:"Personal Information",achievements:"Achievements",family:"My Family"};
+let achFilter = "All", lastPer = 3;
 const pages = {
 home: () => [`
 <div class="hero"><canvas id="net" aria-hidden="true"></canvas>
@@ -253,12 +286,20 @@ personal: () => [
 
 achievements: () => {
   const cats = ["All",...new Set(CONFIG.achievements.map(a=>a.cat))];
+  if(!cats.includes(achFilter)) achFilter = "All";
+  const list = achFilter==="All" ? CONFIG.achievements : CONFIG.achievements.filter(a=>a.cat===achFilter);
+  const per = innerWidth < 700 ? 1 : 3; lastPer = per;
+  const chunks = [];
+  for(let i=0;i<list.length;i+=per) chunks.push(list.slice(i,i+per));
+  if(!chunks.length) chunks.push([]);
+  const chips = `<div class="chips" role="group" aria-label="Filter achievements">${cats.map(c=>`<button class="chip ${c===achFilter?"on":""}" data-cat="${c}">${c}</button>`).join("")}</div>`;
+  const card = a => `<article class="card ach-card">${ph("Photo: "+a.title,"",a.img)}<div class="ach-b"><span class="meta">${a.cat} · ${a.year}</span><h3>${a.title}</h3>${a.by?`<span class="by">${a.by}</span>`:""}<p>${a.desc}</p></div></article>`;
+  const gal = x => typeof x === "string" ? ph(x) : ph(x.label,"",x.img);
   return [
-  wrap(`${head("Achievements")}
-    <div class="chips" role="group" aria-label="Filter achievements">${cats.map((c,i)=>`<button class="chip ${i?"":"on"}" data-cat="${c}">${c}</button>`).join("")}</div>
-    <div class="tl">${CONFIG.achievements.map(a=>`<article class="card item" data-cat="${a.cat}">${ph("Certificate","",a.img)}<div><span class="meta">${a.cat} · ${a.year}</span><h3>${a.title}</h3><p>${a.desc}</p></div></article>`).join("")}</div>`),
-  wrap(`${head("Gallery","Click any box to add a picture of a certificate, award or memorable moment.")}<div class="gal">${CONFIG.gallery.map(g=>ph(g)).join("")}</div>`)
-];},
+    ...chunks.map(ch => wrap(`${head("Achievements")}${chips}<div class="ach">${ch.length?ch.map(card).join(""):'<p class="lead">Nothing in this category yet.</p>'}</div>`)),
+    wrap(`${head("Gallery","Click any box to add a picture of a certificate, award or memorable moment.")}<div class="gal">${CONFIG.gallery.map(gal).join("")}</div>`)
+  ];
+},
 
 family: () => [
   wrap(`${head("My Family")}<blockquote>${CONFIG.familyIntro}</blockquote><div class="group">${ph("Family group photo")}</div>`),
@@ -292,6 +333,9 @@ function go(d){
   else { if(cur>0){cur--;draw();} else { startAt="last"; location.hash = order[(i+3)%4]; } }
 }
 addEventListener("hashchange",route);
+addEventListener("resize",()=>{
+  if(page==="achievements" && (innerWidth<700?1:3)!==lastPer){ screens = pages.achievements(); cur = Math.min(cur,screens.length-1); draw(); }
+});
 $("#next").onclick = () => go(1);
 $("#prev").onclick = () => go(-1);
 burger.onclick = () => burger.setAttribute("aria-expanded", nav.classList.toggle("open"));
@@ -304,8 +348,8 @@ addEventListener("touchend",e=>{ if(tx!==null){const dx=e.changedTouches[0].clie
 app.addEventListener("click",e=>{
   const ch = e.target.closest(".chip");
   if(ch){
-    document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c===ch));
-    document.querySelectorAll(".item").forEach(i=>i.hidden = ch.dataset.cat!=="All" && i.dataset.cat!==ch.dataset.cat);
+    achFilter = ch.dataset.cat;
+    screens = pages.achievements(); cur = 0; draw();
     return;
   }
   const box = e.target.closest(".ph");
