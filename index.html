@@ -206,8 +206,23 @@ const CONFIG = {
     ["Specialization","Network and Security"],["School","University of the Cordilleras"],
     ["Hobbies and Interests","Network Configuration and Troubleshooting"]
   ],
+  intro: "Hi, I'm Zjay, a BS Information Technology student at the University of the Cordilleras, specializing in Network and Security. This page shares the basics about me, what I can do, and where I want to go.",
   motto: "Life shrinks or expands in proportion to one's courage",
-  bio: "I'm an Information Technology student who enjoys figuring out how networks work and how to keep them safe. I like building small labs at home, breaking them on purpose, and learning how to fix them.",
+  /* CONTACT details */
+  contact: [
+    ["Email","zjayguimpatan@gmail.com"],
+    ["Contact Number","09358117668"],
+    ["Languages","Ilocano, Filipino, English"]
+  ],
+  /* SKILLS: [icon, title, short description] - edit freely */
+  skills: [
+    ["🌐","Network Configuration","Setting up and managing network devices and connections."],
+    ["🔧","Troubleshooting","Finding and fixing network and connectivity problems."],
+    ["🛡️","Security Basics","Understanding common threats and how to protect systems."],
+    ["🐍","Python","Writing programs with decisions, loops and functions."],
+    ["☕","Java (beginner)","Learning the basics of Java programming."],
+    ["🤝","Teamwork","Football taught me to work well with others."]
+  ],
   goals: "Finish my degree with strong grades, earn entry-level networking and security certifications, and build a home lab to practice what I learn.",
   career: "Start as a network or systems administrator, grow into a security analyst role, and eventually work toward network security engineering.",
 
@@ -227,7 +242,6 @@ const CONFIG = {
     {cat:"Academic",     title:"Best Output in Printed Poster Making", year:"2024", by:"San Francisco High School Lamut, Ifugao, Inc.", desc:"Certificate of Recognition (Group 2 – St. Lorenzo Ruiz) for best output in Printed Poster Making during Arts Month, given April 26, 2024.", img:"assets/images/poster-making.jpg"},
     {cat:"Certificates", title:"Senior High School Diploma (STEM)", year:"2026", by:"San Francisco High School Lamut, Ifugao, Inc.", desc:"Completed Senior High School in the Academic Track, STEM strand, with a Loyalty Award for A.Y. 2025-2026. Signed March 25, 2026.", img:"assets/images/shs-diploma.jpg"},
     {cat:"Activities",   title:"Best Output in Bible Month Activities", year:"2024", by:"San Francisco High School Lamut, Ifugao, Inc.", desc:"Certificate of Recognition (St. Lorenzo Ruiz group) for best output in the Bible Month activities, theme “God’s Word: The Breath of New Life”, given January 26, 2024.", img:"assets/images/bible-month.jpg"},
-    {cat:"Activities",   title:"Champion, Under 16 Boys (Born 2007)", year:"2023", by:"YSEALI 10th Anniversary Super Cup", desc:"Champion of the Under 16 boys born 2007 category in the YSEALI 10th Anniversary Super Cup 2023 7-aside Football Tournament, given December 10, 2023 at Ifugao State University, Nayon, Lamut.", img:"assets/images/yseali-champion.jpg"},
     {cat:"Skills",       title:"Football (7-aside)", year:"2023", by:"YSEALI 10th Anniversary Super Cup", desc:"Competitive football and teamwork, shown by the Champion title in the Under 16 boys born 2007 category, given December 10, 2023.", img:"assets/images/yseali-champion.jpg"}
   ],
   /* Gallery: label = caption, img = photo path ("" to add by clicking) */
@@ -277,8 +291,10 @@ home: () => [`
 personal: () => [
   wrap(`${head("Personal Information")}
     <div class="cols"><div class="avatar">${ph("Profile picture","",CONFIG.profileImg)}</div>
-    <div><h2>About me</h2><p class="lead">${CONFIG.bio}</p><p class="motto">“${CONFIG.motto}”</p></div></div>`),
+    <div><p class="lead">${CONFIG.intro}</p><p class="motto">“${CONFIG.motto}”</p></div></div>`),
   wrap(`${head("My details")}<div class="facts">${CONFIG.info.map(f=>`<div class="card fact"><b>${f[0]}</b><span>${f[1]}</span></div>`).join("")}</div>`),
+  wrap(`${head("Contact and languages")}<div class="facts">${CONFIG.contact.map(f=>`<div class="card fact"><b>${f[0]}</b><span>${f[1]}</span></div>`).join("")}</div>`),
+  wrap(`${head("Skills")}<div class="grid">${cards(CONFIG.skills)}</div>`),
   wrap(`${head("Interests, goals and career")}
     <div class="grid sm">${cards(CONFIG.interests.map(i=>[i[0],i[1],""]))}</div>
     <div class="grid two"><div class="card"><span class="ico">🎯</span><h3>My goals as an IT student</h3><p>${CONFIG.goals}</p></div>
