@@ -160,11 +160,72 @@ footer .wrap{font-size:.75rem;gap:.5rem}
 .ach-b .meta{font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
 .ach-b p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .ach-card .by{color:var(--text);font-size:.82rem;font-weight:500}
+
+/* ===== CALM ANIMATIONS ===== */
+/* hero title: small, rare glitch */
+.hero h1 span.glitch-loop{position:relative;background:none;color:#fff;-webkit-text-fill-color:#fff}
+.glitch-loop::before,.glitch-loop::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;pointer-events:none;opacity:0}
+.glitch-loop::before{-webkit-text-fill-color:#27d3ff;animation:loopA 10s steps(1) infinite}
+.glitch-loop::after{-webkit-text-fill-color:#ff2bd6;animation:loopB 10s steps(1) infinite}
+@keyframes loopA{0%,93%{opacity:0}94%{opacity:.8;clip-path:inset(20% 0 55% 0);transform:translate(-2px,0)}96%{clip-path:inset(60% 0 15% 0);transform:translate(2px,0)}98%,100%{opacity:0}}
+@keyframes loopB{0%,94%{opacity:0}95%{opacity:.8;clip-path:inset(50% 0 25% 0);transform:translate(2px,0)}97%{clip-path:inset(15% 0 65% 0);transform:translate(-2px,0)}99%,100%{opacity:0}}
+/* gentle fade-in */
+.card,.chip,.pills span,.fact,.ph{animation:rise .5s ease backwards;animation-delay:calc(var(--i,0)*40ms)}
+@keyframes rise{from{opacity:0}}
+/* soft glow on hover */
+.card{position:relative}
+.card::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(200px circle at var(--mx,50%) var(--my,50%),rgba(39,211,255,.14),transparent 60%);opacity:0;transition:opacity .25s;pointer-events:none}
+.card:hover::after{opacity:1}
+nav a{position:relative}
+nav a::before{content:"";position:absolute;left:.9rem;right:.9rem;bottom:2px;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+nav a:hover::before{transform:scaleX(1)}
+/* ZJ monogram, top left */
+.logo{gap:.7rem}
+.zj{font:800 1.5rem Sora,sans-serif;letter-spacing:.02em;background:linear-gradient(90deg,var(--text),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
+
+/* ===== LIGHT / DARK MODE ===== */
+body,header,footer{transition:background-color .3s,color .3s}
+.theme{background:none;border:1px solid var(--line);color:var(--text);border-radius:8px;width:40px;height:40px;font-size:1.1rem;cursor:pointer;margin-left:.6rem;transition:.2s}
+.theme:hover{border-color:var(--cyan);color:var(--cyan)}
+nav{margin-left:auto}
+@media(max-width:760px){.theme{margin-left:auto;margin-right:.5rem;order:2}.burger{order:3}}
+:root[data-theme="light"]{color-scheme:light;--bg:#f3f6ff;--surface:#ffffff;--surface2:#e3ebff;--line:#c5d2f2;--text:#0b1630;--muted:#4b5b82;--blue:#2d6fe0;--cyan:#0a8cbd;--glow:0 0 18px rgba(45,111,224,.22)}
+:root[data-theme="light"] body{background-image:linear-gradient(rgba(45,111,224,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(45,111,224,.07) 1px,transparent 1px)}
+:root[data-theme="light"] header{background:rgba(243,246,255,.88)}
+:root[data-theme="light"] footer{background:rgba(243,246,255,.94)}
+:root[data-theme="light"] nav a:hover,:root[data-theme="light"] nav a.on{color:var(--text)}
+:root[data-theme="light"] .pills span{background:rgba(255,255,255,.85)}
+:root[data-theme="light"] .hero h1 span{background:linear-gradient(90deg,#0b1630,var(--cyan));-webkit-background-clip:text;background-clip:text}
+:root[data-theme="light"] .hero h1 span.glitch-loop{background:none;color:var(--text);-webkit-text-fill-color:var(--text)}
+:root[data-theme="light"] .chip.on,:root[data-theme="light"] .chip:hover,:root[data-theme="light"] .ph:hover{color:var(--text)}
+:root[data-theme="light"] .btn.ghost{color:var(--blue)}
+
+/* ===== CURSOR DESIGN: crosshair ring + dot ===== */
+html.has-cursor,html.has-cursor *{cursor:none!important}
+.cur-dot,.cur-ring{position:fixed;left:0;top:0;pointer-events:none;z-index:100;opacity:0;border-radius:50%;transition:opacity .2s}
+.cur-dot{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.cur-ring{width:34px;height:34px;margin:-17px 0 0 -17px;border:1.5px solid var(--cyan);transition:opacity .2s,width .2s,height .2s,margin .2s,background-color .2s}
+.cur-ring::before,.cur-ring::after{content:"";position:absolute;background:var(--cyan)}
+.cur-ring::before{left:50%;top:-6px;bottom:-6px;width:1.5px;transform:translateX(-50%);-webkit-mask:linear-gradient(#000 0 5px,transparent 5px calc(100% - 5px),#000 calc(100% - 5px));mask:linear-gradient(#000 0 5px,transparent 5px calc(100% - 5px),#000 calc(100% - 5px))}
+.cur-ring::after{top:50%;left:-6px;right:-6px;height:1.5px;transform:translateY(-50%);-webkit-mask:linear-gradient(90deg,#000 0 5px,transparent 5px calc(100% - 5px),#000 calc(100% - 5px));mask:linear-gradient(90deg,#000 0 5px,transparent 5px calc(100% - 5px),#000 calc(100% - 5px))}
+.cur-ring.act{width:52px;height:52px;margin:-26px 0 0 -26px;background:rgba(39,211,255,.12)}
+.cur-ring.down{width:22px;height:22px;margin:-11px 0 0 -11px}
+
+/* ===== HOMEPAGE TYPING ===== */
+.hi{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;font-size:clamp(.82rem,1.6vw,1rem)}
+.hi::before{content:"$ ";opacity:.6}
+.role{font:500 clamp(.95rem,1.9vw,1.2rem)/1.4 ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;color:var(--cyan);margin:.1rem 0 .8rem;min-height:1.5em}
+.role .pre{opacity:.6}
+.role::after{content:"▍";margin-left:2px;animation:blink .8s steps(1) infinite}
+.typing::after{content:"▍";margin-left:2px;-webkit-text-fill-color:var(--cyan);color:var(--cyan);animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
 </style>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body>
 <header><div class="wrap bar">
-  <a class="logo" href="#home"><i></i><span id="brand"></span></a>
+  <a class="logo" href="#home"><b class="zj">ZJ</b><span id="brand"></span></a>
   <button class="burger" aria-label="Open menu" aria-expanded="false">☰</button>
   <nav id="nav"><ul>
     <li><a href="#home" data-p="home">Home</a></li>
@@ -172,6 +233,7 @@ footer .wrap{font-size:.75rem;gap:.5rem}
     <li><a href="#achievements" data-p="achievements">Achievements</a></li>
     <li><a href="#family" data-p="family">My Family</a></li>
   </ul></nav>
+  <button class="theme" id="theme" type="button"></button>
 </div></header>
 <main id="app"></main>
 <div class="wrap ctrl"><button class="btn ghost" id="prev">← Back</button><div class="dots" id="dots" aria-hidden="true"></div><button class="btn" id="next">Next →</button></div>
@@ -207,6 +269,7 @@ const CONFIG = {
     ["Hobbies and Interests","Network Configuration and Troubleshooting"]
   ],
   intro: "Hi, I'm Zjay, a BS Information Technology student at the University of the Cordilleras, specializing in Network and Security. This page shares the basics about me, what I can do, and where I want to go.",
+  roles: ["an IT student","a network enthusiast","a cybersecurity learner","a problem solver"],
   motto: "Life shrinks or expands in proportion to one's courage",
   /* CONTACT details */
   contact: [
@@ -279,7 +342,8 @@ home: () => [`
   <div class="wrap">
     <div>
       <p class="hi">Hello, Welcome to My Digital Portfolio!</p>
-      <h1>Exploring Technology.<span>Connecting Networks.</span><span>Securing the Digital World.</span></h1>
+      <h1><span class="glitch-loop" data-text="Exploring Technology.">Exploring Technology.</span><span>Connecting Networks.</span><span>Securing the Digital World.</span></h1>
+      <p class="role" aria-label="${CONFIG.roles[0]}"><span class="pre">&gt; I am </span><span id="role"></span></p>
       <p class="lead hide-s">I’m ${CONFIG.name}, an Information Technology student specializing in Network and Security. I am passionate about technology, networking, cybersecurity, and continuously developing my skills in the digital world.</p>
       <div class="cta"><a class="btn" href="#achievements">Explore My Portfolio</a><a class="btn ghost" href="#personal">Get to Know Me</a></div>
       <div class="pills">${CONFIG.interests.map(i=>`<span>${i[0]} ${i[1]}</span>`).join("")}</div>
@@ -314,7 +378,7 @@ achievements: () => {
   const gal = x => typeof x === "string" ? ph(x) : ph(x.label,"",x.img);
   return [
     ...chunks.map(ch => wrap(`${head("Achievements")}${chips}<div class="ach">${ch.length?ch.map(card).join(""):'<p class="lead">Nothing in this category yet.</p>'}</div>`)),
-    wrap(`${head("Gallery","Click any box to add a picture of a certificate, award or memorable moment.")}<div class="gal">${CONFIG.gallery.map(gal).join("")}</div>`)
+    wrap(`${head("Gallery")}<div class="gal">${CONFIG.gallery.map(gal).join("")}</div>`)
   ];
 },
 
@@ -343,6 +407,7 @@ function draw(){
   const last = cur === screens.length - 1, nx = names[order[(order.indexOf(page)+1)%4]];
   $("#next").innerHTML = `Next${last ? ": " + nx : ""} →`;
   if(page==="home") startNet();
+  decorate();
 }
 function go(d){
   const i = order.indexOf(page);
@@ -402,6 +467,89 @@ function startNet(){
     }
     for(const p of pts){const d=Math.hypot(p.x-m.x,p.y-m.y); if(d<170){x.strokeStyle=`rgba(39,211,255,${1-d/170})`;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(m.x,m.y);x.stroke();}}
     if(!still) raf=requestAnimationFrame(loop);
+  })();
+}
+
+/* ---------- extra animation ---------- */
+const noMotion = matchMedia("(prefers-reduced-motion:reduce)").matches;
+const wait = ms => new Promise(r=>setTimeout(r,ms));
+let typeRun = 0;
+async function typeInto(el,text,speed,run){
+  for(let i=1;i<=text.length;i++){ if(run!==typeRun) return false; el.textContent = text.slice(0,i); await wait(speed); }
+  return true;
+}
+async function homeTyping(run){
+  const hi = app.querySelector(".hi"), role = app.querySelector("#role");
+  const lines = [...app.querySelectorAll(".hero h1 > span")];
+  if(!hi || !role || !lines.length) return;
+  if(noMotion){ role.textContent = CONFIG.roles[0]; return; }
+  const items = [hi,...lines].map(el=>({el,text:el.textContent,data:el.dataset.text}));
+  items.forEach(i=>{ i.el.style.minHeight = i.el.offsetHeight + "px"; i.el.textContent = ""; delete i.el.dataset.text; });
+  await wait(300);
+  for(const i of items){
+    i.el.classList.add("typing");
+    if(!await typeInto(i.el,i.text,i.el===hi?28:42,run)) return;
+    i.el.classList.remove("typing");
+    if(i.data) i.el.dataset.text = i.data;
+    await wait(180);
+  }
+  let k = 0;
+  while(run===typeRun){
+    const word = CONFIG.roles[k++ % CONFIG.roles.length];
+    if(!await typeInto(role,word,60,run)) return;
+    await wait(1600);
+    for(let n=word.length-1;n>=0;n--){ if(run!==typeRun) return; role.textContent = word.slice(0,n); await wait(32); }
+    await wait(300);
+  }
+}
+function decorate(){
+  app.querySelectorAll(".card,.chip,.pills span,.ph").forEach((el,i)=>el.style.setProperty("--i",Math.min(i,10)));
+  const run = ++typeRun;
+  if(page==="home") homeTyping(run);
+}
+app.addEventListener("pointermove",e=>{
+  const c = e.target.closest(".card"); if(!c) return;
+  const r = c.getBoundingClientRect();
+  c.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%"); c.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%");
+});
+
+/* ---------- light / dark mode ---------- */
+const themeBtn = $("#theme");
+function themeLabel(){
+  const light = document.documentElement.dataset.theme === "light";
+  themeBtn.textContent = light ? "☾" : "☀";
+  themeBtn.setAttribute("aria-label", light ? "Switch to dark mode" : "Switch to light mode");
+  themeBtn.title = light ? "Dark mode" : "Light mode";
+}
+themeBtn.onclick = () => {
+  const next = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+  document.documentElement.dataset.theme = next;
+  try{ localStorage.setItem("theme",next); }catch(e){}
+  themeLabel();
+};
+themeLabel();
+
+/* ---------- custom cursor ---------- */
+if(matchMedia("(hover:hover) and (pointer:fine)").matches){
+  const dot = document.createElement("div"), ring = document.createElement("div");
+  dot.className = "cur-dot"; ring.className = "cur-ring"; document.body.append(ring,dot);
+  const still = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  let mx=-100,my=-100,rx=-100,ry=-100,shown=false;
+  addEventListener("pointermove",e=>{
+    mx=e.clientX; my=e.clientY;
+    if(!shown){ shown=true; rx=mx; ry=my; document.documentElement.classList.add("has-cursor"); dot.style.opacity=1; ring.style.opacity=1; }
+    ring.classList.toggle("act",!!e.target.closest("a,button,.ph,.chip,.card,.btn"));
+  });
+  addEventListener("pointerdown",()=>ring.classList.add("down"));
+  addEventListener("pointerup",()=>ring.classList.remove("down"));
+  document.documentElement.addEventListener("mouseleave",()=>{ dot.style.opacity=0; ring.style.opacity=0; });
+  document.documentElement.addEventListener("mouseenter",()=>{ if(shown){ dot.style.opacity=1; ring.style.opacity=1; } });
+  (function loop(){
+    const k = still ? 1 : .22;
+    rx += (mx-rx)*k; ry += (my-ry)*k;
+    dot.style.transform = `translate(${mx}px,${my}px)`;
+    ring.style.transform = `translate(${rx}px,${ry}px)`;
+    requestAnimationFrame(loop);
   })();
 }
 
